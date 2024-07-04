@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  django:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+      - pgadmin
+    environment:
+      - DEBUG=1
+      - DB_NAME=educa
+      - DB_USER=sav
+      - DB_PASSWORD=7yy4odaC
+      - DB_HOST=postgres
+      - DB_PORT=5432
+
+  postgres:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgressql/data/
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: educa
+      POSTGRES_USER: sav
+      POSTGRES_PASSWORD: 7yy4odaC
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: artur.chviire@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 7yy4odaC
+    ports:
+      - 5050:80
+
+volumes:
+  postgres_data:
